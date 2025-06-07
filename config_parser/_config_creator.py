@@ -8,10 +8,10 @@ from typing import Type
 from typing import TypeVar
 
 import toml
-from _custom_argument_parser import CustomArgumentParser
 from pydantic_core import PydanticUndefined
 
 from config_parser._config_base import ConfigBase
+from config_parser._custom_argument_parser import CustomArgumentParser
 
 _ConfigType = TypeVar("_ConfigType", bound=ConfigBase)
 
