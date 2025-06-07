@@ -12,6 +12,6 @@ load_dotenv()
 
 
 class ConfigBase(BaseModel):
-    _root: Path = Field(default_factory=lambda: Path(os.getcwd()))
+    _root: Path = Path(os.getcwd())
     pos_args: list[str] = Field(default_factory=list)
     config_file: Optional[Path] = None
