@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import argparse
 from types import GenericAlias
-from typing import Any
 
 
 class CustomArgumentParser(argparse.ArgumentParser):
@@ -15,7 +14,7 @@ class CustomArgumentParser(argparse.ArgumentParser):
             kwargs["type"] = kwargs.get("type").__origin__
         if isinstance(kwargs.get("type"), type):
             if issubclass(kwargs.get("type"), bool):
-                kwargs["type"] = self._str2bool
+                kwargs["type"] = str
             elif issubclass(kwargs.get("type"), list):
                 kwargs["nargs"] = "*"
                 kwargs["type"] = str
@@ -26,16 +25,3 @@ class CustomArgumentParser(argparse.ArgumentParser):
             *args,
             **kwargs,
         )
-
-    @staticmethod
-    def _str2bool(v: Any) -> Any:
-        if isinstance(v, bool):
-            return v
-        if v.lower() in ("yes", "true", "t", "y", "1"):
-            return True
-        elif v.lower() in ("no", "false", "f", "n", "0"):
-            return False
-        else:
-            raise argparse.ArgumentTypeError(
-                f"Boolean value expected got {v}."
-            )

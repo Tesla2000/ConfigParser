@@ -53,22 +53,22 @@ class ConfigCreator:
     ) -> _ConfigType:
         arg_dict = {
             name: getattr(args, name)
-            for name in config_class.model_fields
+            for name in config_class.model_fields.keys()
             if hasattr(args, name) and getattr(args, name) != PydanticUndefined
         }
         if (
             arg_dict.get("config_file")
             and Path(arg_dict["config_file"]).exists()
         ):
-            config = config_class(
-                **{
+            config = config_class.model_validate(
+                {
                     **arg_dict,
                     **toml.load(arg_dict.get("config_file")),
                 }
             )
         else:
-            config = config_class(**arg_dict)
-        for variable in config.model_fields:
+            config = config_class.model_validate(arg_dict)
+        for variable in config_class.model_fields.keys():
             value = getattr(config, variable)
             if (
                 isinstance(value, Path)
